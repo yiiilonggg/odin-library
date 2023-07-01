@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href = "src/style.css">
+    <script defer src = "src/script.js"></script>
+    <title>Library</title>
+</head>
+<body>
+    <div class = "main">
+        <div class = "header">
+            <p>Library</p>
+            <button id = "addBook"><img src = "img/plus-circle.svg">Add Book</button>
+        </div>
+    
+        <div class = "container"></div>
+    </div>
+
+    <div id = "popup">
+        <div>
+            <label for = "title">Title</label>
+            <input type = "text" name = "title">
+        </div>
+        
+        <div>
+            <label for = "author">Author</label>
+            <input type = "text" name = "author">
+        </div>
+
+        <div>
+            <label for = "pages">Pages</label>
+            <input type = "number" name = "pages" min = "0">
+        </div>
+
+        <div>
+            <input type = "radio" id = "yes" name = "read" value = "yes">
+            <label for = "yes">Read</label>
+            <input type = "radio" id = "no" name = "read" value = "no">
+            <label for = "no">Not Read</label>
+        </div>
+    </div>
+</body>
+</html>
