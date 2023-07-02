@@ -41,8 +41,10 @@ function displayBook(book) {
     newBookCardReadImg.src = (book.read) ? "/img/check.svg" : "/img/dots-horizontal.svg";
     newBookCardRemoveImg.src = "/img/delete.svg";
 
-    newBookCardRemove.id = book.bookID;
+    newBookCardRemove.className = book.bookID;
+    newBookCardRead.className = book.bookID;
     newBookCardRemove.addEventListener('click', (event) => deleteBook(event));
+    newBookCardRead.addEventListener('click', (event) => readBook(event));
 
     newBookCardRead.appendChild(newBookCardReadImg);
     newBookCardRemove.appendChild(newBookCardRemoveImg);
@@ -81,10 +83,23 @@ function submitForm() {
 }
 
 function deleteBook(event) {
-    let targetBookID = event.target.id;
+    let targetBookID = event.target.className;
     myLibrary.delete(targetBookID);
     const targetCard = document.querySelector(`#book${targetBookID}`);
     container.removeChild(targetCard);
+}
+
+function readBook(event) {
+    let targetBookID = event.target.className;
+    let targetBook = myLibrary.get(Number(targetBookID));
+    if (targetBook.read) return;
+    targetBook.read = true;
+    const targetCard = document.querySelector(`#book${targetBookID}`);
+    const targetReadButton = document.querySelector(`#book${targetBookID} > .buttons > button:first-child`);
+    const targetReadImg = document.querySelector(`#book${targetBookID} > .buttons > button:first-child >img`);
+    targetCard.style.backgroundColor = "lightgreen";
+    targetReadButton.style.backgroundColor = "lightgreen";
+    targetReadImg.src = "img/check.svg";
 }
 
 const main = document.querySelector(".main");
