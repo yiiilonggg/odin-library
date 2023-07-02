@@ -121,3 +121,13 @@ button {
     aspect-ratio: 1 / 1;
     margin: 2rem;
 }
+
+.card > .buttons {
+    display: flex;
+    width: 75%;
+    gap: 16px;
+}
+
+.card > .buttons > button:last-child {
+    background-color: gray;
+}

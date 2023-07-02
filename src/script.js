@@ -1,17 +1,20 @@
-let myLibrary = []
+let myLibrary = new Map();
+let bookCounter = 0;
 
 function Book(title, author, pages, read) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
+    this.bookID = bookCounter;
+    bookCounter++;
     this.info = function() {
         return `${this.title} by ${this.author}, ${this.pages} pages, ${(this.read) ? "has been read" : "has not been read"}.`
     }
 }
 
 function addBookToLibrary(title, author, pages, read) {
-    myLibrary.push(new Book(title, author, pages, read));
+    myLibrary.set(bookCounter, new Book(title, author, pages, read));
 }
 
 function displayBook(book) {
@@ -19,20 +22,37 @@ function displayBook(book) {
     const newBookCardTitle = document.createElement("p");
     const newBookCardAuthor = document.createElement("p");
     const newBookCardPages = document.createElement("p");
-    const newBookCardRead = document.createElement("img");
 
-    newBookCard.className = "card"
+    const newBookCardButtons = document.createElement("div");
+    const newBookCardRead = document.createElement("button");
+    const newBookCardRemove = document.createElement("button");
+    const newBookCardReadImg = document.createElement("img");
+    const newBookCardRemoveImg = document.createElement("img");
+
+    newBookCard.className = "card";
+    newBookCard.id = `book${book.bookID}`;
+    newBookCardButtons.className = "buttons";
     if (book.read) newBookCard.style.backgroundColor = "lightgreen";
+    newBookCardRead.style.backgroundColor = (book.read) ? "lightgreen" : "antiquewhite";
 
     newBookCardTitle.textContent = book.title;
     newBookCardAuthor.textContent = book.author;
     newBookCardPages.textContent = `${book.pages} pages`;
-    newBookCardRead.src = (book.read) ? "/img/check.svg" : "/img/dots-horizontal.svg";
+    newBookCardReadImg.src = (book.read) ? "/img/check.svg" : "/img/dots-horizontal.svg";
+    newBookCardRemoveImg.src = "/img/delete.svg";
+
+    newBookCardRemove.id = book.bookID;
+    newBookCardRemove.addEventListener('click', (event) => deleteBook(event));
+
+    newBookCardRead.appendChild(newBookCardReadImg);
+    newBookCardRemove.appendChild(newBookCardRemoveImg);
+    newBookCardButtons.appendChild(newBookCardRead);
+    newBookCardButtons.appendChild(newBookCardRemove);
 
     newBookCard.appendChild(newBookCardTitle);
     newBookCard.appendChild(newBookCardAuthor);
     newBookCard.appendChild(newBookCardPages);
-    newBookCard.appendChild(newBookCardRead);
+    newBookCard.appendChild(newBookCardButtons);
 
     container.appendChild(newBookCard);
 }
@@ -51,13 +71,20 @@ function submitForm() {
     if (flag) {
         console.log(newBookRead.checked);
         addBookToLibrary(newBookTitle.value, newBookAuthor.value, newBookPages.value, newBookRead.checked);
-        displayBook(myLibrary[myLibrary.length - 1]);
+        displayBook(myLibrary.get(bookCounter - 1));
         main.style.filter = "blur(0px)";
         popup.style.visibility = "hidden";
         errorMessage.style.visibility = "hidden";
     } else {
         errorMessage.style.visibility = "visible";
     }
+}
+
+function deleteBook(event) {
+    let targetBookID = event.target.id;
+    myLibrary.delete(targetBookID);
+    const targetCard = document.querySelector(`#book${targetBookID}`);
+    container.removeChild(targetCard);
 }
 
 const main = document.querySelector(".main");
